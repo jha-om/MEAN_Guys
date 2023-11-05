@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SendButton from "../assets/send.svg";
 import UserIcon from "../assets/user-icon.png";
 import GPTImgLogo from "../assets/chatgptLogo.svg";
-import NavigateIcon from "../assets/navigation.png";
 import { sendMessagetoOpenAI } from "../openai";
 
 const Main = () => {
@@ -17,50 +16,65 @@ const Main = () => {
     long: "",
     lat: "",
   });
-  const getLocationRef = useRef(null);
+  // const getLocationRef = useRef(null);
 
-  function showPosition(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    const accuracy = position.coords.accuracy;
+  useEffect(() => {
+    function showPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const accuracy = position.coords.accuracy;
 
-    const output = `
-        Latitude: ${latitude}
-        Longitude: ${longitude}
-        Accuracy: ${accuracy} meters
-      `;
+      const output = `
+          Latitude: ${latitude}
+          Longitude: ${longitude}
+          Accuracy: ${accuracy} meters
+        `;
 
-    alert(output);
-    setLongLat({
-      long: longitude,
-      lat: latitude,
-    });
-  }
-
-  function showError(error) {
-    switch (error.code) {
-      case 1:
-        alert("Permission denied.");
-        break;
-      case 2:
-        alert("Position unavailable.");
-        break;
-      case 3:
-        alert("Timeout.");
-        break;
-      default:
-        alert("Unknown error.");
+      console.log(output);
+      setLongLat({
+        long: longitude,
+        lat: latitude,
+      });
     }
-  }
-  const handleGeoClick = () => {
+
+    function showError(error) {
+      switch (error.code) {
+        case 1:
+          alert("Permission denied.");
+          break;
+        case 2:
+          alert("Position unavailable.");
+          break;
+        case 3:
+          alert("Timeout.");
+          break;
+        default:
+          alert("Unknown error.");
+      }
+    }
     navigator.geolocation.getCurrentPosition(showPosition, showError);
-    function openGoogleMapsWithLatitudeAndLongitudeAndSearch(lat, long) {
-      const url = `https://www.google.com/maps/search/?api=1&query=hospitals+24/7+near+me+&destination=${longlat.lat},${longlat.long}`;
-      setTimeout(() => {
-        window.open(url, "_blank");
-      }, 1500);
-    }
-    openGoogleMapsWithLatitudeAndLongitudeAndSearch(longlat.lat, longlat.long);
+  }, []);
+
+  function openGoogleMapsWithLatitudeAndLongitude(latitude, longitude) {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+    window.open(url, "_blank");
+  }
+
+  function openGoogleMapsWithLatitudeAndLongitudeAndSearchHosp(lat, long) {
+    const url = `https://www.google.com/maps/search/?api=1&query=hospitals+24/7+near+me+&destination=${lat},${long}`;
+    setTimeout(() => {
+      window.open(url, "_blank");
+    }, 1500);
+  }
+
+  const handleGeoHospClick = () => {
+    openGoogleMapsWithLatitudeAndLongitudeAndSearchHosp(
+      longlat.lat,
+      longlat.long
+    );
+  };
+  const handleGeoClick = () => {
+    openGoogleMapsWithLatitudeAndLongitude(longlat.lat, longlat.long);
   };
 
   const handleSend = async () => {
@@ -95,6 +109,22 @@ const Main = () => {
         })}
       </div>
       <div className="chatFooter">
+        <div className="locations">
+          <button
+            // ref={getLocationRef}
+            onClick={handleGeoHospClick}
+            className="navigateMe"
+            id="getLocation">
+            Get Hospitals nearby !
+          </button>
+          <button
+            // ref={getLocationRef}
+            onClick={handleGeoClick}
+            className="navigateMe"
+            id="getLocation">
+            Get your location !
+          </button>
+        </div>
         <div className="input">
           <input
             placeholder="Send a message"
@@ -107,13 +137,6 @@ const Main = () => {
               console.log(input.toString());
             }}
           />{" "}
-          <button
-            ref={getLocationRef}
-            onClick={handleGeoClick}
-            className="navigateMe"
-            id="getLocation">
-            <img src={NavigateIcon} alt="" />
-          </button>
           <button className="send" onClick={handleSend}>
             <img src={SendButton} alt="send" />
           </button>

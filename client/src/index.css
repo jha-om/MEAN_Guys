@@ -111,7 +111,7 @@ body {
   scroll-behavior: smooth;
   width: 100%;
   max-width: 70rem;
-  height: calc(100vh - 17rem);
+  height: calc(100vh - 24rem);
 }
 .chat {
   margin: 1rem;
@@ -145,6 +145,10 @@ body {
   margin-bottom: 1rem;
 }
 .input {
+  margin-top: 0.5rem;
+}
+.input,
+.locations {
   padding: 0.5rem;
   background: rgba(28, 30, 58, 1);
   display: flex;
@@ -179,12 +183,15 @@ body {
 .send:hover > img {
   filter: contrast(500%);
 }
+
 .navigateMe {
+  width: 50%;
   padding: 1rem;
   background-color: transparent;
   border: none;
   border-radius: 0.5rem;
-  margin-right: 1rem;
+  color: white;
+  background-color: #615c8f;
 }
 .navigateMe:hover {
   background-color: #5a4bff;
@@ -196,4 +203,8 @@ body {
   width: 20.5px;
   height: 21px;
   filter: contrast(0.1%);
+}
+.locations {
+  justify-content: center;
+  gap: 1rem;
 }

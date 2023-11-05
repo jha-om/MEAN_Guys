@@ -46,3 +46,21 @@ getLocationButton.addEventListener("click", () => {
   openGoogleMapsWithLatitudeAndLongitudeAndSearch(lat, long);
 });
 
+// function convertLatLongToLocation(latitude, longitude) {
+//   const geocoder = new google.maps.Geocoder();
+//   geocoder.geocode({
+//     latLng: new google.maps.LatLng(latitude, longitude),
+//   }, (results, status) => {
+//     if (status === google.maps.GeocoderStatus.OK) {
+//       const location = results[0].formatted_address;
+//       console.log(`Location: ${location}`);
+//     } else {
+//       console.error('Error converting latitude and longitude to location:', status);
+//     }
+//   });
+// }
+
+// const latitude = lat;
+// const longitude = long;
+
+// convertLatLongToLocation(latitude, longitude);
