@@ -128,9 +128,9 @@ body {
   border-radius: 0.5rem;
 }
 .bot {
-    background: rgba(28, 30, 58, 1);
-    width: 68rem;
-    border-radius: 0.5rem;
+  background: rgba(28, 30, 58, 1);
+  width: 68rem;
+  border-radius: 0.5rem;
 }
 .chatFooter {
   margin-top: auto;
@@ -152,6 +152,11 @@ body {
   border-radius: 0.5rem;
   width: 68rem;
 }
+.input > input:focus,
+.input > input:active {
+  background: rgba(51, 53, 88, 1);
+  border-radius: 0.3rem;
+}
 .input > input {
   width: calc(100% - 3rem);
   outline: none;
@@ -162,4 +167,33 @@ body {
 .send {
   background: transparent;
   border: none;
+}
+.send {
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.send:hover {
+  background-color: #5a4bff;
+}
+.send:hover > img {
+  filter: contrast(500%);
+}
+.navigateMe {
+  padding: 1rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+}
+.navigateMe:hover {
+  background-color: #5a4bff;
+}
+.navigateMe > img {
+  cursor: pointer;
+  padding: 0.1rem;
+  border-radius: 0.5rem;
+  width: 20.5px;
+  height: 21px;
+  filter: contrast(0.1%);
 }
