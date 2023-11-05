@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speech to Text Demo</title>
+  </head>
+  <body>
+    <button id="start-button">Start Recognition</button>
+    <p id="transcript"></p>
+
+    <script>
+      const recognition = new webkitSpeechRecognition();
+      const transcriptElement = document.getElementById("transcript");
+      const startButton = document.getElementById("start-button");
+
+      recognition.continuous = true;
+      recognition.lang = "en-US";
+      recognition.interimResults = true;
+
+      let timeoutId = null;
+
+      startButton.addEventListener("click", () => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+
+        recognition.start();
+
+        timeoutId = setTimeout(() => {
+          recognition.stop();
+          alert(
+            "Speech recognition has ended. Here is the transcript:\n" +
+              transcriptElement.textContent
+          );
+        }, 10000);
+      });
+
+      recognition.onresult = (event) => {
+        let transcript = "";
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            transcript += event.results[i][0].transcript + ". ";
+          } else {
+            transcript += event.results[i][0].transcript + " ";
+          }
+        }
+
+        transcriptElement.textContent = transcript;
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Error:", event.error);
+      };
+
+      recognition.onend = () => {
+        console.log("Speech recognition ended");
+      };
+    </script>
+  </body>
+</html>
