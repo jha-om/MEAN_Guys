@@ -1,66 +1,58 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>YouTube Best Liked Videos</title>
-  </head>
-  <body>
-    <h1>YouTube Best Liked Videos</h1>
-    <input type="text" id="searchQuery" placeholder="Enter a search query" />
-    <button onclick="searchVideos()">Search</button>
-    <div id="videoList"></div>
+<head>
+  <title>Embedded YouTube Video Search</title>
 
-    <script>
-      // Function to make a request to the YouTube API
-      function searchVideos() {
-        const searchQuery = document.getElementById("searchQuery").value;
+  <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+  <h1>Embedded YouTube Video Search</h1>
 
-        // Your API key (replace 'YOUR_API_KEY' with your actual API key)
-        const apiKey = "AIzaSyCeVRDJI0_W97KfTUt3VtoBm2xaIwXxX94";
+  <input type="text" id="searchQuery" placeholder="Enter a search query">
 
-        const popa = `${searchQuery}`;
+  <button onclick="searchAndEmbed()">Search and Embed</button>
 
-        // API request URL to search for videos based on the search query
-        const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&part=snippet&type=video&q=${popa}&maxResults=4`;
+  <div id="videoPlayer"></div>
 
-        // Fetch the video data
-        fetch(apiUrl)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data)
-            displayVideos(data.items);
-          })
-          .catch((error) => console.error("Error fetching videos:", error));
-      }
+  <script>
+    // Global variable to store the YouTube player object
+    let player;
 
-      // Function to display the retrieved videos
-      function displayVideos(videos) {
-        const videoList = document.getElementById("videoList");
-        videoList.innerHTML = ""; // Clear previous results
+    // Function to initialize the YouTube player API
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('videoPlayer', {
+        width: 560,
+        height: 315,
+        events: {
+          'onReady': onPlayerReady
+        }
+      });
+    }
 
-        videos.forEach((video) => {
-          const videoId = video.id.videoId;
-          const videoTitle = video.snippet.title;
+    // Function to handle player ready event and hide the search results iframe
+    function onPlayerReady(event) {
+      // Hide the search results iframe once the player is ready
+      document.getElementById('searchResults').style.display = 'none';
+    }
 
-          // Display each video as an embedded iframe
-          const iframe = document.createElement("iframe");
-          iframe.width = 560;
-          iframe.height = 315;
-          iframe.src = `https://www.youtube.com/embed/${videoId}`;
-          iframe.title = videoTitle;
-          iframe.allowFullscreen = true;
+    // Function to search for videos and embed the first result
+    function searchAndEmbed() {
+      const searchQuery = document.getElementById('searchQuery').value;
 
-          // Add the video iframe to the videoList div
-          videoList.appendChild(iframe);
+      // Create the YouTube Data API search URL
+      const searchURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchQuery}&maxResults=1&type=video&key=AIzaSyDgVFyVusbs1qhmLYLe3qFRfPpPHoPqOMs   `;
 
-          // Storing data in local storage
-          localStorage.setItem("cachedData", "some data to be cached");
+      // Fetch the search results using the YouTube Data API
+      fetch(searchURL)
+        .then(response => response.json())
+        .then(data => {
+          // Extract the video ID from the first search result
+          const videoId = data.items[0].id.videoId;
 
-          // After 10 seconds, remove the data from local storage
-          setTimeout(function () {
-            localStorage.removeItem("cachedData");
-          }, 1000); // 10000 milliseconds = 10 seconds
+          // Embed the first video using the YouTube player API
+          player.loadVideoById(videoId);
         });
-      }
-    </script>
-  </body>
+    }
+  </script>
+</body>
 </html>
