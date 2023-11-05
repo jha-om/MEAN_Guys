@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Best Liked Videos</title>
+</head>
+<body>
+    <h1>YouTube Best Liked Videos</h1>
+    <input type="text" id="searchQuery" placeholder="Enter a search query">
+    <button onclick="searchVideos()">Search</button>
+    <div id="videoList"></div>
+
+    <script>
+        // Function to make a request to the YouTube API
+        function searchVideos() {
+            const searchQuery = document.getElementById('searchQuery').value;
+
+            // Your API key (replace 'YOUR_API_KEY' with your actual API key)
+            const apiKey = 'YOUR_API_KEY';
+
+            // API request URL to search for videos based on the search query
+            const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&part=snippet&type=video&q=${searchQuery}&order=rating&maxResults=10`;
+
+            // Fetch the video data
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    displayVideos(data.items);
+                })
+                .catch(error => console.error('Error fetching videos:', error));
+        }
+
+        // Function to display the retrieved videos
+        function displayVideos(videos) {
+            const videoList = document.getElementById('videoList');
+            videoList.innerHTML = ''; // Clear previous results
+
+            videos.forEach(video => {
+                const videoId = video.id.videoId;
+                const videoTitle = video.snippet.title;
+
+                // Display each video as an embedded iframe
+                const iframe = document.createElement('iframe');
+                iframe.width = 560;
+                iframe.height = 315;
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                iframe.title = videoTitle;
+                iframe.allowFullscreen = true;
+
+                // Add the video iframe to the videoList div
+                videoList.appendChild(iframe);
+            });
+        }
+    </script>
+</body>
+</html>
