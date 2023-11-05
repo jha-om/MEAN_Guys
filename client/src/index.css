@@ -199,7 +199,6 @@ body {
 .navigateMe > img {
   cursor: pointer;
   padding: 0.1rem;
-  border-radius: 0.5rem;
   width: 20.5px;
   height: 21px;
   filter: contrast(0.1%);
@@ -207,4 +206,24 @@ body {
 .locations {
   justify-content: center;
   gap: 1rem;
+}
+#start-button {
+  background: transparent;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: none;
+  margin-right: 0.5rem;
+}
+#start-button:hover {
+  background-color: #5a4bff;
+}
+#start-button > img {
+  width: 21px;
+  filter: contrast(0.05%);
+}
+#videoList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

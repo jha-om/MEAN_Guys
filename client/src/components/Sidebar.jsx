@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assets/chatgpt.svg";
+import Logo from "../assets/logo.png";
 import AddButton from "../assets/add-30.png";
 import MssgButton from "../assets/message.svg";
 import HomeButton from "../assets/home.svg";
@@ -12,7 +12,7 @@ const Sidebar = () => {
       <div className="upperSide">
         <div className="upperSide__top">
           <img src={Logo} className="logo" alt="logo" />{" "}
-          <span className="brand">Dummy GPT</span>
+          <span className="brand">Health GPT</span>
         </div>
         <button className="midButton">
           <img src={AddButton} alt="" className="addButton" />

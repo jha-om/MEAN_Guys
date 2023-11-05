@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: "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",
   dangerouslyAllowBrowser: true,
 });
 
@@ -9,7 +9,7 @@ export async function sendMessagetoOpenAI(message) {
   try {
     const res = await openai.completions.create({
       model: "text-davinci-003",
-      prompt: `${message}, tell me 3 remedies in bullet points`,
+      prompt: `${message}, tell me 3 crucial first aid in bullet points. Here keep the location of the region India. `,
       max_tokens: 256,
       top_p: 1,
       frequency_penalty: 0,
