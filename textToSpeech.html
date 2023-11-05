@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text-to-Speech & Speech-to-Text</title>
+</head>
+<body>
+    <h1>Text-to-Speech</h1>
+    
+    <div>
+        <input type="text" id="text-to-translate">
+        <select id="language-select">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <!-- Add more language options -->
+        </select>
+        <button onclick="translateAndSpeak()">Speak</button>
+    </div>
+    <script>
+        // Speech synthesis
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-IN';
+        recognition.interimResults = true;
+
+        recognition.onresult = function(event) {
+            const transcript = Array.from(event.results)
+                .map(result => result[0].transcript)
+                .join('');
+            document.getElementById('speech-to-text').textContent = transcript;
+        };
+
+        recognition.onend = function() {
+            document.getElementById('start-btn').style.display = 'inline-block';
+            document.getElementById('stop-btn').style.display = 'none';
+            document.getElementById('recognition-status').textContent = 'Speech recognition stopped.';
+        };
+
+        function translateAndSpeak() {
+            const textToTranslate = document.getElementById('text-to-translate').value;
+            const selectedLanguage = document.getElementById('language-select').value;
+
+            // Google Translate API URL with required parameters
+            const googleTranslateURL = `https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(textToTranslate)}&tl=${selectedLanguage}&client=gtx`;
+
+            // Create a SpeechSynthesisUtterance with the translated text URL
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = textToTranslate; // Fallback text if translation fails
+            utterance.lang = selectedLanguage;
+
+            // Fetch the translated text audio from Google Translate API and speak it
+            fetch(googleTranslateURL)
+                .then(response => response.blob())
+                .then(blob => {
+                    utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === selectedLanguage);
+                    utterance.voiceURI = 'Google Translate';
+                    utterance.audio = URL.createObjectURL(blob);
+                    speechSynthesis.speak(utterance);
+                })
+                .catch(error => {
+                    console.error('Error fetching and speaking translated text:', error);
+                    speechSynthesis.speak(utterance);
+                });
+        }
+    </script>
+</body>
+</html>
