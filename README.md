@@ -17,9 +17,9 @@ The problem we identified here as a team is that in a situation of a medical eme
 - `PPT Link` - https://www.canva.com/design/DAFzRP-jaq4/jgAHXC_Zh3_VBzieuDsyYw/edit?utm_content=DAFzRP-jaq4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 - `Team Details` - 
-    ### Om Jha
-    ### Rajeev Lochan Muduli
-    ### Rishabh Bharadwaj;
+    - Om Jha
+    - Rajeev Lochan Muduli
+    - Rishabh Bharadwaj;
 
 
 - `Project Built in hackathon.`
